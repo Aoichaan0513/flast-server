@@ -1,16 +1,14 @@
 import { Prisma } from '@prisma/client';
 import { compare, hash } from 'bcrypt';
 import { Response, Router } from 'express';
-import { UserWithToken } from '../interfaces';
+import { User, UserWithToken } from '../interfaces';
 import { Error, Request } from '../interfaces/express';
 import { Database } from '../main';
 import { sign } from '../utils/jwt';
 
 const router = Router();
 
-interface CreateUserBody {
-    name: string;
-    email: string;
+interface CreateUserBody extends Pick<User, 'name' | 'email'> {
     password: string;
 }
 
@@ -35,7 +33,7 @@ router.put('/', async (req: Request<CreateUserBody>, res: Response<UserWithToken
 
         console.log(user);
 
-        return res.status(200).send(
+        return res.status(201).send(
             {
                 id: user.id,
                 name: user.name,

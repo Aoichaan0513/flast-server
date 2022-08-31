@@ -26,7 +26,7 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
 
     try {
         const payload = verify(token, SECRET_KEY);
-        console.log(payload);
+
         if (typeof payload === 'object') {
             const userId = payload.id;
             const user = await Database.user.findUnique({
