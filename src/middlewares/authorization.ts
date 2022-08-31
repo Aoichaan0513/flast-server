@@ -7,7 +7,7 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
     if (!header) {
         return res.status(401).send(
             {
-                code: 10000,
+                code: 20000,
                 message: 'Authorization header not specified!'
             }
         );
@@ -16,7 +16,7 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
     if (!header.startsWith('Bearer ')) {
         return res.status(400).send(
             {
-                code: 10001,
+                code: 20001,
                 message: 'The format of the authentication header is incorrect! The authentication method must be Bearer.'
             }
         );
@@ -38,7 +38,7 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
             if (!user) {
                 return res.status(404).send(
                     {
-                        code: 10003,
+                        code: 20003,
                         message: 'There is no user associated with the token!'
                     }
                 );
@@ -56,7 +56,7 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
         } else {
             return res.status(400).send(
                 {
-                    code: 10002,
+                    code: 20002,
                     message: 'Token parsing failed!'
                 }
             );
@@ -64,7 +64,7 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
     } catch (e) {
         return res.status(400).send(
             {
-                code: 10002,
+                code: 20002,
                 message: 'Token parsing failed!'
             }
         );

@@ -12,7 +12,7 @@ router.delete('/', async (req: Request, res: Response<Error | {}>) => {
 
     if (!user) {
         return res.status(500).send({
-            code: 10004,
+            code: 20004,
             message: 'User information could not be retrieved!'
         });
     }

@@ -15,13 +15,15 @@
   "scripts": {
     "start": "node .",
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "deploy": "npm run build && vercel --prod"
   },
   "dependencies": {
     "@prisma/client": "4.3.0",
     "bcrypt": "5.0.1",
     "date-fns": "2.29.2",
     "express": "4.18.1",
+    "helmet": "6.0.0",
     "jsonwebtoken": "8.5.1"
   },
   "devDependencies": {

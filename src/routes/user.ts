@@ -51,7 +51,7 @@ router.put('/', async (req: Request<CreateUserBody>, res: Response<UserWithToken
                 }
             );
         } else {
-            return res.status(500).send({ code: 99999, message: 'Unknown error!' });
+            return res.status(500).send({ code: 10001, message: 'Unknown error!' });
         }
     }
 });
@@ -72,7 +72,7 @@ router.post('/', async (req: Request<LoginUserBody>, res: Response<UserWithToken
         if (!user) {
             return res.status(404).send(
                 {
-                    code: 11000,
+                    code: 21000,
                     message: 'There is no user with that email address!'
                 }
             );
@@ -83,7 +83,7 @@ router.post('/', async (req: Request<LoginUserBody>, res: Response<UserWithToken
         if (!result) {
             return res.status(401).send(
                 {
-                    code: 11001,
+                    code: 21001,
                     message: 'Password did not match!'
                 }
             );
@@ -110,7 +110,7 @@ router.post('/', async (req: Request<LoginUserBody>, res: Response<UserWithToken
             }
         );
     } catch (e) {
-        return res.status(500).send({ code: 99999, message: 'Unknown error!' });
+        return res.status(500).send({ code: 10001, message: 'Unknown error!' });
     }
 });
 
