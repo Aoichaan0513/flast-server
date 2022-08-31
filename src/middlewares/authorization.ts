@@ -44,6 +44,7 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
                 );
             }
 
+            req.token = token;
             req.user = {
                 id: user.id,
                 name: user.name,

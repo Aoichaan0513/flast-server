@@ -4,7 +4,7 @@ import Profile from './routes/profile';
 import Token from './routes/token';
 import User from './routes/user';
 
-export const SECRET_KEY = 'a1b2c3';
+export const SECRET_KEY = process.env.SECRET_KEY!!;
 export const Database = new PrismaClient();
 
 const App = express();
