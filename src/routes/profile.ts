@@ -21,14 +21,7 @@ interface PatchUserBody extends Pick<User, 'name' | 'email'> {
 }
 
 router.patch('/', async (req: Request<PatchUserBody>, res: Response<User | Error>) => {
-    const user = req.user;
-
-    if (!user) {
-        return res.status(500).send({
-            code: 20004,
-            message: 'User information could not be retrieved!'
-        });
-    }
+    const user = req.user!!;
 
     const updatedUser = await Database.user.update({
         where: {

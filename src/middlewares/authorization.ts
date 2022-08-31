@@ -14,7 +14,7 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
     }
 
     if (!header.startsWith('Bearer ')) {
-        return res.status(400).send(
+        return res.status(401).send(
             {
                 code: 20001,
                 message: 'The format of the authentication header is incorrect! The authentication method must be Bearer.'
@@ -29,6 +29,23 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
 
         if (typeof payload === 'object') {
             const userId = payload.id;
+
+            const count = await Database.token.count({
+                where: {
+                    userId,
+                    token
+                }
+            });
+
+            if (count < 1) {
+                return res.status(401).send(
+                    {
+                        code: 20003,
+                        message: 'This token is not available!'
+                    }
+                );
+            }
+
             const user = await Database.user.findUnique({
                 where: {
                     id: userId
@@ -36,9 +53,9 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
             });
 
             if (!user) {
-                return res.status(404).send(
+                return res.status(401).send(
                     {
-                        code: 20003,
+                        code: 20004,
                         message: 'There is no user associated with the token!'
                     }
                 );
@@ -54,7 +71,7 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
 
             return next();
         } else {
-            return res.status(400).send(
+            return res.status(401).send(
                 {
                     code: 20002,
                     message: 'Token parsing failed!'
@@ -62,7 +79,7 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
             );
         }
     } catch (e) {
-        return res.status(400).send(
+        return res.status(401).send(
             {
                 code: 20002,
                 message: 'Token parsing failed!'
