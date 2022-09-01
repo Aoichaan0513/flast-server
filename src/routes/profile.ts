@@ -1,6 +1,6 @@
 import { Response, Router } from 'express';
 import { User } from '../interfaces';
-import { Error, Request } from '../interfaces/express';
+import { BodyRequest, Error } from '../interfaces/express';
 import { Database } from '../main';
 import { authorization } from '../middlewares/authorization';
 
@@ -8,7 +8,7 @@ const router = Router();
 
 router.use(authorization);
 
-router.get('/', async (req: Request, res: Response<User | Error>) => {
+router.get('/', async (req: BodyRequest, res: Response<User | Error>) => {
     const user = req.user;
 
     console.log(user);
@@ -20,7 +20,7 @@ interface PatchUserBody extends Pick<User, 'name' | 'email'> {
     password: string;
 }
 
-router.patch('/', async (req: Request<PatchUserBody>, res: Response<User | Error>) => {
+router.patch('/', async (req: BodyRequest<PatchUserBody>, res: Response<User | Error>) => {
     const user = req.user!!;
 
     const updatedUser = await Database.user.update({

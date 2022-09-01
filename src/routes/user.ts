@@ -1,8 +1,9 @@
 import { Prisma } from '@prisma/client';
 import { compare, hash } from 'bcrypt';
 import { Response, Router } from 'express';
+import { body, validationResult } from 'express-validator';
 import { User, UserWithToken } from '../interfaces';
-import { Error, Request } from '../interfaces/express';
+import { BodyRequest, Error, ValidatorError } from '../interfaces/express';
 import { Database } from '../main';
 import { sign } from '../utils/jwt';
 
@@ -12,7 +13,11 @@ interface CreateUserBody extends Pick<User, 'name' | 'email'> {
     password: string;
 }
 
-router.put('/', async (req: Request<CreateUserBody>, res: Response<UserWithToken | Error>) => {
+router.put('/', [body('email').isEmail()], async (req: BodyRequest<CreateUserBody>, res: Response<UserWithToken | Error | ValidatorError>) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(400).json({ errors: errors.array() });
+
     try {
         const user = await Database.user.create({
             data: {
@@ -61,7 +66,11 @@ interface LoginUserBody {
     password: string;
 }
 
-router.post('/', async (req: Request<LoginUserBody>, res: Response<UserWithToken | Error>) => {
+router.post('/', [body('email').isEmail()], async (req: BodyRequest<LoginUserBody>, res: Response<UserWithToken | Error | ValidatorError>) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(400).json({ errors: errors.array() });
+
     try {
         const user = await Database.user.findUnique({
             where: {

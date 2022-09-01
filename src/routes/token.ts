@@ -1,7 +1,7 @@
 import { isWithinInterval, subDays } from 'date-fns';
 import { Response, Router } from 'express';
 import { decode, JwtPayload } from 'jsonwebtoken';
-import { Error, Request } from '../interfaces/express';
+import { BodyRequest, Error } from '../interfaces/express';
 import { Database } from '../main';
 import { authorization } from '../middlewares/authorization';
 import { sign } from '../utils/jwt';
@@ -10,7 +10,7 @@ const router = Router();
 
 router.use(authorization);
 
-router.delete('/', async (req: Request, res: Response<Error | {}>) => {
+router.delete('/', async (req: BodyRequest, res: Response<Error | {}>) => {
     const user = req.user!!;
 
     const { count } = await Database.token.deleteMany({
@@ -23,7 +23,7 @@ router.delete('/', async (req: Request, res: Response<Error | {}>) => {
     return res.status(count > 0 ? 204 : 404).send({});
 });
 
-router.patch('/', async (req: Request, res: Response<Error | { token: string; }>) => {
+router.patch('/', async (req: BodyRequest, res: Response<Error | { token: string; }>) => {
     const user = req.user!!;
     const decoded = decode(req.token!!) as JwtPayload;
 

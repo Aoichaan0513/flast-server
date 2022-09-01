@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import express, { json, Response, urlencoded } from 'express';
 import helmet from 'helmet';
-import { Error, Request } from './interfaces/express';
+import { BodyRequest, Error } from './interfaces/express';
+import Bookmarks from './routes/bookmarks';
 import Profile from './routes/profile';
 import Token from './routes/token';
 import User from './routes/user';
@@ -18,8 +19,9 @@ App.use(helmet());
 App.use('/user', User);
 App.use('/profile', Profile);
 App.use('/token', Token);
+App.use('/bookmarks', Bookmarks);
 
-App.use((req: Request, res: Response<Error>) => {
+App.use((req: BodyRequest, res: Response<Error>) => {
     return res.status(404).send(
         {
             code: 10000,
