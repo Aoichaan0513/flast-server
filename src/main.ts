@@ -1,7 +1,8 @@
-import { PrismaClient } from '@prisma/client';
-import express, { json, Response, urlencoded } from 'express';
+import {PrismaClient} from '@prisma/client';
+import cors from 'cors';
+import express, {json, Response, urlencoded} from 'express';
 import helmet from 'helmet';
-import { BodyRequest, Error } from './interfaces/express';
+import {BodyRequest, Error} from './interfaces/express';
 import Bookmarks from './routes/bookmarks';
 import Profile from './routes/profile';
 import Token from './routes/token';
@@ -15,6 +16,7 @@ const App = express();
 App.use(json());
 App.use(urlencoded({ extended: true }));
 App.use(helmet());
+App.use(cors());
 
 App.use('/user', User);
 App.use('/profile', Profile);
